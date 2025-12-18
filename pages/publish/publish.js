@@ -1,5 +1,5 @@
 // pages/publish/publish.js
-
+var mockData = require('../../utils/mockData.js')
 
 Page({
   data: {
@@ -8,29 +8,26 @@ Page({
       tabColor: '#333' || '#20ACAB',
     },
     topic:{
-      sorts:
-      ["生活分享", "闲置交易", "表白交友","失物招领", "疑问互答", "任务兼职"],
-    selected:0
+      sorts: ["生活分享", "闲置交易", "表白交友","失物招领", "疑问互答", "任务兼职"],
+      selected:0
     },
     content:"", // 输入框内容
     location: "",
     tempFilePaths: [], // 上传图片小程序临时路径
-    fileIDs:[], // 上传图片云储存路径
     video:'',
     anonymous: false,
     isChecked:false, // 阅读并同意选中状态
-    isPublish: false
+    isPublish: true // 本地模拟发布功能状态
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    wx.cloud.database().collection('publish').get().then(res=>{
-      this.setData({
-        isPublish:res.data[0].isPublish
-      }) 
-     })
+    // 本地模拟获取发布状态
+    this.setData({
+      isPublish: true
+    })
   },
 
   // 获取文本框输入内容
@@ -58,18 +55,6 @@ Page({
       success: res=> {
         this.clearInput("tempFilePaths");
         this.addNewImage(res.tempFilePaths);
-        for (let i = 0; i < res.tempFilePaths.length; i++) {
-          let timestamp = (new Date()).valueOf(); // 新建日期对象并变成时间戳
-          wx.cloud.uploadFile({
-            cloudPath: timestamp+".png", // 上传文件在云端的文件名字，避免重复这里采用了当前时间戳来命名
-            filePath: res.tempFilePaths[i], // // 小程序临时文件路径
-            success: res => {
-              this.setData({
-                fileIDs:this.data.fileIDs.concat(res.fileID)
-              })
-            }
-          })
-        }
       }
     })
   },
@@ -110,15 +95,8 @@ Page({
       camera: 'back',
       success:(res)=>{
         this.clearInput("video")
-        let timestamp = (new Date()).valueOf(); // 新建日期对象并变成时间戳
-        wx.cloud.uploadFile({
-          cloudPath: timestamp+".mp4", // 上传文件在云端的文件名字，避免重复这里采用了当前时间戳来命名
-          filePath: res.tempFilePath, // // 小程序临时文件路径
-          success: res => {
-            this.setData({
-              video:res.fileID
-            })
-          }
+        this.setData({
+          video: res.tempFilePath // 使用本地临时路径
         })
       }
     })
@@ -140,11 +118,11 @@ Page({
         city = address.substring(index0+1, index1+1)
       } else if (address.includes('北京市')) {
         city = '北京市'
-      } else if (addr.includes('上海市')) {
+      } else if (address.includes('上海市')) {
         city = '上海市'
-      } else if (addr.includes('天津市')) {
+      } else if (address.includes('天津市')) {
         city = '天津市'
-      } else if (addr.includes('重庆市')) {
+      } else if (address.includes('重庆市')) {
         city = '重庆市'
       }
     }
@@ -195,9 +173,8 @@ Page({
     })
   },
 
-
   // 发布的类型
-  clickTag:function(e){ 
+  clickTag:function(e){
     let topicId = e.target.dataset.topicid;
     let topic = this.data.topic;
     topic.selected = topicId;
@@ -223,39 +200,26 @@ Page({
   backArticle(){
     wx.navigateBack({
       delta: 1
-    })    
+    })
   },
 
-  // 发布帖子
-  publishArticle(){
+  // 发布帖子（本地模拟）
+  publishArticle(){ 
     if(this.data.isChecked === false || this.data.content === ''){
       wx.showToast({
         icon: 'error',
         title: '未填写或未同意'
       })
     }else{
-      wx.cloud.database().collection('articles').add({
-        data: {
-          headImg: wx.getStorageSync('avatarUrl'),
-          images: this.data.fileIDs,
-          video: this.data.video,
-          text: this.data.content,
-          time: (new Date()).valueOf(),
-          location: this.data.location,
-          type: this.data.topic.sorts[this.data.topic.selected],
-          userName: wx.getStorageSync('nickName'),
-          prizeList: [],
-          isPrize: false
-        }
-      }).then(
+      // 本地模拟发布数据
       wx.showToast({
         icon: 'success',
         title: '发布成功'
-      }),
+      })
+      // 跳转到文章列表页面
       wx.switchTab({
         url: '/pages/article/article'
       })
-      )
     }
   }
 })

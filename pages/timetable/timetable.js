@@ -1,6 +1,7 @@
 //index.js
 //获取应用实例
 var app = getApp()
+var mockData = require('../../utils/mockData.js')
 Page({
   data: {
 		time:[
@@ -42,10 +43,9 @@ Page({
   },
 
   getCourses(){
-    wx.cloud.database().collection('courses').get().then(res=>{
-      this.setData({
-        courses: res.data
-      })
+    // 使用本地mock数据
+    this.setData({
+      courses: mockData.courses
     })
   }
 })

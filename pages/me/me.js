@@ -1,5 +1,6 @@
 // pages/me/me.js
 var app = getApp()
+var mockData = require('../../utils/mockData.js')
 Page({
 
   /**
@@ -35,25 +36,24 @@ Page({
 
   },
   
-  // 获取用户头像昵称
+  // 获取用户头像昵称（本地模拟）
   getUserProfile(){
-    wx.getUserProfile({
-      desc: '用于完善会员资料', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
-      success: (res) => {
-        wx.cloud.callFunction({
-          name: 'logins',	//	logins 云函数名字
-          success: res => {
-            wx.setStorageSync('openid', res.result.openid) 
-          }
-        })
-        this.setData({
-          nickName: res.userInfo.nickName,
-          avatarUrl: res.userInfo.avatarUrl,
-          hasUserInfo: true
-        })
-        wx.setStorageSync('nickName', res.userInfo.nickName)
-        wx.setStorageSync('avatarUrl', res.userInfo.avatarUrl)
-      }
+    // 使用本地mock数据中的第一个用户信息
+    const mockUser = mockData.users[0]
+    
+    this.setData({
+      nickName: mockUser.nickName,
+      avatarUrl: mockUser.avatarUrl,
+      hasUserInfo: true
+    })
+    
+    wx.setStorageSync('nickName', mockUser.nickName)
+    wx.setStorageSync('avatarUrl', mockUser.avatarUrl)
+    wx.setStorageSync('openid', mockUser.openid)
+    
+    wx.showToast({
+      icon: 'success',
+      title: '登录成功'
     })
   },
 

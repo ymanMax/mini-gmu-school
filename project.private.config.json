@@ -1,45 +1,25 @@
 {
-  "projectname": "%E6%A0%A1%E5%9B%AD%E5%B0%8F%E7%A8%8B%E5%BA%8F",
+  "projectname": "%25E6%25A0%25A1%25E5%259B%25AD%25E5%25B0%258F%25E7%25A8%258B%25E5%25BA%258F",
   "setting": {
-    "compileHotReLoad": true
+    "compileHotReLoad": true,
+    "urlCheck": false,
+    "coverView": true,
+    "lazyloadPlaceholderEnable": false,
+    "skylineRenderEnable": false,
+    "preloadBackgroundData": false,
+    "autoAudits": false,
+    "useApiHook": true,
+    "useApiHostProcess": true,
+    "showShadowRootInWxmlPanel": true,
+    "useStaticServer": true,
+    "useLanDebug": false,
+    "showES6CompileOption": false,
+    "checkInvalidKey": true,
+    "ignoreDevUnusedFiles": true,
+    "bigPackageSizeSupport": false,
+    "useIsolateContext": true
   },
   "description": "项目私有配置文件。此文件中的内容将覆盖 project.config.json 中的相同字段。项目的改动优先同步到此文件中。详见文档：https://developers.weixin.qq.com/miniprogram/dev/devtools/projectconfig.html",
-  "libVersion": "2.24.1",
-  "condition": {
-    "miniprogram": {
-      "list": [
-        {
-          "name": "pages/article/article",
-          "pathName": "pages/article/article",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/article/article",
-          "pathName": "pages/article/article",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/publish/publish",
-          "pathName": "pages/publish/publish",
-          "query": "",
-          "launchMode": "default",
-          "scene": null
-        },
-        {
-          "name": "pages/me/me",
-          "pathName": "pages/me/me",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/article-detail/article-detail",
-          "pathName": "pages/article-detail/article-detail",
-          "query": "",
-          "scene": null
-        }
-      ]
-    }
-  }
+  "libVersion": "3.12.1",
+  "condition": {}
 }

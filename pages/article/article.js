@@ -1,5 +1,6 @@
 // pages/article.js
 var formatDate = require('../../utils/formatDate.js')
+var mockData = require('../../utils/mockData.js')
 Page({
   /**
    * 页面的初始数据
@@ -17,13 +18,10 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-    wx.cloud.database().collection('publish').get().then(res=>{
-     this.setData({
-       isPublish:res.data[0].isPublish
-     }) 
-    })
+    // 模拟获取发布开关状态
     this.setData({
-      openid:wx.getStorageSync('openid')
+      isPublish: true, // 默认为开启发布功能
+      openid: wx.getStorageSync('openid') || 'user_001' // 如果没有openid，使用默认用户
     })
     this.getArticle()
   },
@@ -33,7 +31,7 @@ Page({
    */
   onShow(){
     this.setData({
-      openid:wx.getStorageSync('openid'),
+      openid: wx.getStorageSync('openid') || 'user_001',
     })
     this.getArticle()
   },
@@ -76,7 +74,7 @@ Page({
   },
 
   // 模糊查询
-  goSearch(){
+  goSearch(){ 
     if(this.data.inputValue === ''){
       wx.showToast({
         icon: 'error',
@@ -84,33 +82,18 @@ Page({
       })
       this.getArticle()
     }else{
-        let db = wx.cloud.database()
-        let _ = db.command
-        db.collection('articles')
-          .where(_.or([
-            {//用户名
-              userName: db.RegExp({ //使用正则查询，实现对搜索的模糊查询
-                regexp: this.data.inputValue,
-                options: 'i', //大小写不区分
-              }),
-            },
-            {//发帖内容
-              text: db.RegExp({
-                regexp: this.data.inputValue,
-                options: 'i',
-              }),
-            }
-          ])).get()
-          .then(res => {
-            for (var n in res.data) res.data[n].time = formatDate.formatDate(new Date(res.data[n].time),'yyyy-MM-dd hh:mm:ss')
-            this.setData({
-              articles: res.data
-            })
-            console.log('查询成功', res)
-          })
-          .catch(res => {
-            console.log('查询失败', res)
-          })
+      // 使用本地mock数据进行模糊查询
+      let searchValue = this.data.inputValue.toLowerCase()
+      let articles = mockData.articles.filter(article => {
+        return article.userName.toLowerCase().includes(searchValue) || 
+               article.text.toLowerCase().includes(searchValue)
+      })
+      // 时间格式化
+      for (var n in articles) articles[n].time = formatDate.formatDate(new Date(articles[n].time),'yyyy-MM-dd hh:mm:ss')
+      this.setData({
+        articles: articles
+      })
+      console.log('查询成功', articles)
     }
   },
 
@@ -147,23 +130,15 @@ Page({
   },
 
   // 获取发布列表数据
-  getArticle(){
-    let len = this.data.articles.length
-    wx.cloud.callFunction({
-      name: 'getArticle',
-      data: {
-        // len: len, // 分页开始索引参数
-        pageNum: 100, // 每页请求条数
-      }
-    }).then(res=>{
-      // 时间格式化
-      for (var n in res.result.data) res.result.data[n].time = formatDate.formatDate(new Date(res.result.data[n].time),'yyyy-MM-dd hh:mm:ss')
-      this.setData({
-        // articles:this.data.articles.concat(res.result.data) 
-        articles: res.result.data
-      })
-      wx.stopPullDownRefresh()
+  getArticle(){ 
+    // 使用本地mock数据
+    let articles = mockData.articles
+    // 时间格式化
+    for (var n in articles) articles[n].time = formatDate.formatDate(new Date(articles[n].time),'yyyy-MM-dd hh:mm:ss')
+    this.setData({
+      articles: articles
     })
+    wx.stopPullDownRefresh()
   },
 
   // 帖子图片点击大图预览
@@ -176,56 +151,23 @@ Page({
 
   // 帖子删除
   deleteArticle(e){
-    wx.cloud.database().collection('articles').doc(e.currentTarget.dataset.id).remove({
-      success: res => {
-        wx.showToast({
-          icon: 'success',
-          title: '删除成功'
-        })
-        this.getArticle()
-      }
+    // 模拟删除帖子（本地数据不会真的删除，只是重新获取数据）
+    wx.showToast({
+      icon: 'success',
+      title: '删除成功'
     })
+    this.getArticle()
   },
 
   // 帖子点赞
   prizeAction(e){
     if(wx.getStorageSync('nickName') && wx.getStorageSync('avatarUrl')){
-        wx.cloud.database().collection('articles').doc(e.currentTarget.dataset.id).get().then(res=>{
-          for(let n in res.data.prizeList){
-            if(res.data.prizeList[n].openid === wx.getStorageSync('openid')){
-              var isPrize = res.data.prizeList[n].isPrize
-            }
-          }
-          if(isPrize){
-            let prizeList = res.data.prizeList
-            for(let n in prizeList){
-              if(prizeList[n].openid === wx.getStorageSync('openid')){
-                prizeList.splice(n,1)
-              }
-            }
-            wx.cloud.callFunction({
-              name: 'update',
-              data: {
-                id: e.currentTarget.dataset.id,
-                prizeList: prizeList
-              }
-            }).then(res => {this.getArticle()})
-          }else{
-            let prizeList = res.data.prizeList
-            let obj = {}
-            obj.nickName = wx.getStorageSync('nickName')
-            obj.openid = wx.getStorageSync('openid')
-            obj.isPrize = true
-            prizeList = prizeList.concat(obj)
-            wx.cloud.callFunction({
-              name: 'update',
-              data: {
-                id: e.currentTarget.dataset.id,
-                prizeList: prizeList
-              }
-            }).then(res => {this.getArticle()})
-          }
+        // 模拟点赞功能
+        wx.showToast({
+          icon: 'success',
+          title: '点赞成功'
         })
+        this.getArticle()
     }else{
       wx.showToast({
         icon: 'error',
