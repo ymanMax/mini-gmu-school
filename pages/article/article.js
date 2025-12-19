@@ -130,15 +130,115 @@ Page({
   },
 
   // 获取发布列表数据
-  getArticle(){ 
+  getArticle(){
     // 使用本地mock数据
     let articles = mockData.articles
     // 时间格式化
-    for (var n in articles) articles[n].time = formatDate.formatDate(new Date(articles[n].time),'yyyy-MM-dd hh:mm:ss')
+    for (var n in articles) {
+      articles[n].time = formatDate.formatDate(new Date(articles[n].time),'yyyy-MM-dd hh:mm:ss')
+      // 初始化评论展开状态和输入值
+      articles[n].isCommentExpanded = false
+      articles[n].commentInputValue = ''
+      articles[n].replyTo = null // 回复目标
+      // 格式化评论时间
+      if (articles[n].commentList) {
+        for (var m in articles[n].commentList) {
+          articles[n].commentList[m].time = formatDate.formatDate(new Date(articles[n].commentList[m].time),'yyyy-MM-dd hh:mm:ss')
+        }
+      }
+    }
     this.setData({
       articles: articles
     })
     wx.stopPullDownRefresh()
+  },
+
+  // 切换评论展开/折叠
+  toggleComment(e) {
+    const articleId = e.currentTarget.dataset.id
+    const articles = this.data.articles.map(article => {
+      if (article._id === articleId) {
+        return {
+          ...article,
+          isCommentExpanded: !article.isCommentExpanded
+        }
+      }
+      return article
+    })
+    this.setData({ articles })
+  },
+
+  // 评论输入
+  onCommentInput(e) {
+    const articleId = e.currentTarget.dataset.id
+    const value = e.detail.value
+    const articles = this.data.articles.map(article => {
+      if (article._id === articleId) {
+        return {
+          ...article,
+          commentInputValue: value
+        }
+      }
+      return article
+    })
+    this.setData({ articles })
+  },
+
+  // 提交评论
+  submitComment(e) {
+    const articleId = e.currentTarget.dataset.id
+    const articles = this.data.articles.map(article => {
+      if (article._id === articleId) {
+        const commentValue = article.commentInputValue.trim()
+        if (!commentValue) return article
+
+        // 创建新评论
+        const newComment = {
+          _id: `comment_${Date.now()}`,
+          nickName: wx.getStorageSync('nickName') || '匿名用户',
+          openid: this.data.openid,
+          text: commentValue,
+          time: Date.now(),
+          toOpenid: article.replyTo ? article.replyTo.toUid : '',
+          toNickname: article.replyTo ? article.replyTo.toNickname : ''
+        }
+
+        // 更新评论列表
+        const updatedComments = [...(article.commentList || []), newComment]
+
+        return {
+          ...article,
+          commentList: updatedComments,
+          commentInputValue: '',
+          replyTo: null
+        }
+      }
+      return article
+    })
+    this.setData({ articles })
+    wx.showToast({
+      title: '评论成功',
+      icon: 'success'
+    })
+  },
+
+  // 回复评论
+  replyComment(e) {
+    const articleId = e.currentTarget.dataset.id
+    const toNickname = e.currentTarget.dataset.tonickname
+    const toUid = e.currentTarget.dataset.touid
+
+    const articles = this.data.articles.map(article => {
+      if (article._id === articleId) {
+        return {
+          ...article,
+          replyTo: { toNickname, toUid },
+          commentInputValue: `回复 ${toNickname}：`
+        }
+      }
+      return article
+    })
+    this.setData({ articles })
   },
 
   // 帖子图片点击大图预览

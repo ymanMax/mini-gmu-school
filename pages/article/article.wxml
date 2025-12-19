@@ -70,9 +70,15 @@
             <view wx:for="{{item.prizeList}}" wx:for-index="nickIndex" wx:for-item="nickItem" wx:key="index">{{nickItem.nickName}} <text wx:if="{{nickIndex<item.prizeList.length-1}}">,</text>
             </view>
         </view>
+        <!-- 评论展开/折叠按钮 -->
+        <view class="comment-toggle" wx:if="{{item.commentList.length>0}}" bindtap="toggleComment" data-id="{{item._id}}">
+            <text wx:if="{{item.isCommentExpanded}}">收起评论</text>
+            <text wx:else>查看评论 ({{item.commentList.length}})</text>
+        </view>
+
         <!-- 帖子评论详情 -->
-        <view class="comment-box" wx:if="{{item.commentList.length>0}}">
-            <view bindlongtap="{{openid==item._openid?'deleteComment':''}}" class="comment" data-id="{{item._id}}" data-index="{{comIndex}}" wx:for="{{item.commentList}}" wx:for-index="comIndex" wx:for-item="comItem" wx:key="index">
+        <view class="comment-box" wx:if="{{item.commentList.length>0 && item.isCommentExpanded}}">
+            <view class="comment" data-id="{{item._id}}" data-index="{{comIndex}}" wx:for="{{item.commentList}}" wx:for-index="comIndex" wx:for-item="comItem" wx:key="index">
                 <text class="comment-nickname">{{comItem.nickName}}<text wx:if="{{!comItem.toOpenid}}">：</text>
                 </text>
                 <block wx:if="{{comItem.toOpenid}}">
@@ -80,7 +86,16 @@
                     <text class="comment-nickname">{{comItem.toNickname}}：</text>
                 </block>
                 <text>{{comItem.text}}</text>
+                <view class="comment-reply" bindtap="replyComment" data-id="{{item._id}}" data-comindex="{{comIndex}}" data-tonickname="{{comItem.nickName}}" data-touid="{{comItem.openid}}">
+                    回复
+                </view>
             </view>
+        </view>
+
+        <!-- 评论输入区域 -->
+        <view class="comment-input-box" wx:if="{{item.isCommentExpanded}}">
+            <input class="comment-input" placeholder="写下你的评论..." value="{{item.commentInputValue}}" bindinput="onCommentInput" data-id="{{item._id}}" />
+            <button class="comment-submit" bindtap="submitComment" data-id="{{item._id}}" disabled="{{!item.commentInputValue.trim()}}">发送</button>
         </view>
     </view>
   </view>
