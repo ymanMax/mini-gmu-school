@@ -1,31 +1,80 @@
 <!--pages/timetable/timetable.wxml-->
-<view class="top">
-  <view wx:for="{{['一','二','三','四','五','六','日']}}" class="top-text">周{{item}}</view>
-</view>
-<scroll-view scroll-y="true" class="scroll">
-
-  <view style="height:1200rpx;width:730rpx;display:flex;">
-    <view>
-      <view wx:for="{{time}}" class="left">
-				<text>{{item.index}}</text>
-        <text>{{item.name}}</text>
-      </view>
+<view class="container">
+  <view class="top-bar">
+    <view class="top">
+      <view wx:for="{{['一','二','三','四','五','六','日']}}" class="top-text">周{{item}}</view>
     </view>
-
-		<!-- 课程分界线 -->
-    <view wx:for="{{time}}">
-      <view style="width:750rpx; margin-top:{{(index+1)*150}}rpx; position: absolute; border-bottom:1rpx solid lightgray;">
-      </view>
-    </view>
-
-    <!--课表-->
-    <view wx:for="{{courses}}">
-      <view class="flex-item course-item" 
-						data-statu="open" 
-						data-index="{{index}}" 
-						style="margin-left:{{(item.day-1)*97}}rpx; margin-top:{{(item.start-1)*150}}rpx; height:{{item.count*150}}rpx; background-color:{{colorArrays[index%9]}}">
-      <view class="smalltext" >{{item.course}}</view>
-      </view>
+    <view class="edit-buttons">
+      <button wx:if="{{!isEditing}}" class="edit-btn" bindtap="startEdit">编辑</button>
+      <button wx:if="{{isEditing}}" class="save-btn" bindtap="saveEdit">保存</button>
+      <button wx:if="{{isEditing}}" class="cancel-btn" bindtap="cancelEdit">取消</button>
+      <button class="add-btn" bindtap="showAddCourseModal">添加课程</button>
     </view>
   </view>
-</scroll-view>
+
+  <scroll-view scroll-y="true" class="scroll">
+    <view style="height:1200rpx;width:730rpx;display:flex;">
+      <view>
+        <view wx:for="{{time}}" class="left">
+          <text>{{item.index}}</text>
+          <text>{{item.name}}</text>
+        </view>
+      </view>
+
+      <!-- 课程分界线 -->
+      <view wx:for="{{time}}">
+        <view style="width:750rpx; margin-top:{{(index+1)*150}}rpx; position: absolute; border-bottom:1rpx solid lightgray;">
+        </view>
+      </view>
+
+      <!--课表-->
+      <view wx:for="{{courses}}">
+        <view class="flex-item course-item"
+              data-statu="open"
+              data-index="{{index}}"
+              style="margin-left:{{(item.day-1)*97}}rpx; margin-top:{{(item.start-1)*150}}rpx; height:{{item.count*150}}rpx; background-color:{{colorArrays[index%9]}}">
+          <view class="smalltext">{{item.course}}</view>
+          <view wx:if="{{isEditing}}" class="course-operations">
+            <text class="delete-btn" bindtap="deleteCourse" data-index="{{index}}">删除</text>
+            <text class="edit-course-btn" bindtap="editCourse" data-index="{{index}}">编辑</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</view>
+
+<!-- 添加/编辑课程弹窗 -->
+<view wx:if="{{showCourseModal}}" class="modal-overlay" bindtap="hideCourseModal">
+  <view class="modal-content" catchtap="stopPropagation">
+    <view class="modal-title">{{editingCourse ? '编辑课程' : '添加课程'}}</view>
+    <view class="modal-form">
+      <view class="form-item">
+        <label>课程名称：</label>
+        <input class="form-input" value="{{formData.course}}" bindinput="onFormInput" data-field="course" placeholder="请输入课程名称" />
+      </view>
+      <view class="form-item">
+        <label>星期：</label>
+        <picker class="form-picker" value="{{formData.day}}" range="{{['一','二','三','四','五','六','日']}}" bindchange="onDayChange">
+          <view class="picker-text">{{['一','二','三','四','五','六','日'][formData.day-1]}}</view>
+        </picker>
+      </view>
+      <view class="form-item">
+        <label>开始节数：</label>
+        <picker class="form-picker" value="{{formData.start}}" range="{{[1,2,3,4,5,6,7,8,9,10]}}" bindchange="onStartChange">
+          <view class="picker-text">{{formData.start}}</view>
+        </picker>
+      </view>
+      <view class="form-item">
+        <label>课程节数：</label>
+        <picker class="form-picker" value="{{formData.count}}" range="{{[1,2,3,4]}}" bindchange="onCountChange">
+          <view class="picker-text">{{formData.count}}</view>
+        </picker>
+      </view>
+    </view>
+    <view class="modal-buttons">
+      <button class="modal-btn cancel" bindtap="hideCourseModal">取消</button>
+      <button class="modal-btn confirm" bindtap="confirmCourse">确定</button>
+    </view>
+  </view>
+</view>
