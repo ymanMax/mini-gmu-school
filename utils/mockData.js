@@ -107,7 +107,8 @@ const mockData = {
       gender: 1,
       city: '北京',
       province: '北京',
-      country: '中国'
+      country: '中国',
+      signature: '好好学习，天天向上'
     },
     {
       _id: 'user_002',
@@ -117,7 +118,8 @@ const mockData = {
       gender: 2,
       city: '上海',
       province: '上海',
-      country: '中国'
+      country: '中国',
+      signature: '热爱生活，积极向上'
     }
   ]
 }
