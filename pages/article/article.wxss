@@ -178,6 +178,67 @@ input {
   color: #586b94;
 }
 
+/* 评论展开/折叠按钮 */
+.comment-toggle {
+  color: #586b94;
+  font-size: 28rpx;
+  margin-top: 15rpx;
+  padding: 10rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.comment-toggle:active {
+  color: #405175;
+}
+
+/* 评论回复按钮 */
+.comment-reply {
+  color: #586b94;
+  font-size: 26rpx;
+  margin-left: 20rpx;
+  display: inline-block;
+}
+
+.comment-reply:active {
+  color: #405175;
+}
+
+/* 评论输入区域 */
+.comment-input-box {
+  display: flex;
+  align-items: center;
+  margin-top: 15rpx;
+  padding-top: 15rpx;
+  border-top: 1rpx solid #f0f0f0;
+}
+
+.comment-input {
+  flex: 1;
+  background: #f7f7f7;
+  border-radius: 25rpx;
+  padding: 15rpx 20rpx;
+  font-size: 28rpx;
+  border: none;
+  outline: none;
+}
+
+.comment-submit {
+  background: #586b94;
+  color: white;
+  border-radius: 25rpx;
+  padding: 15rpx 30rpx;
+  font-size: 28rpx;
+  margin-left: 15rpx;
+  border: none;
+  min-width: 120rpx;
+  text-align: center;
+}
+
+.comment-submit[disabled] {
+  background: #ccc;
+  color: #999;
+}
+
 .cemera-box {
   margin: 15rpx 20rpx 0rpx 0rpx;
   text-align: right;

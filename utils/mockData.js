@@ -19,7 +19,36 @@ const mockData = {
         { nickName: '小红', openid: 'user_002', isPrize: true },
         { nickName: '小刚', openid: 'user_003', isPrize: true }
       ],
-      isPrize: false
+      isPrize: false,
+      commentList: [
+        {
+          _id: 'comment_001',
+          nickName: '小红',
+          openid: 'user_002',
+          text: '我也想去！一起吧！',
+          time: 1704070800000,
+          toOpenid: '',
+          toNickname: ''
+        },
+        {
+          _id: 'comment_002',
+          nickName: '小刚',
+          openid: 'user_003',
+          text: '图书馆人多吗？',
+          time: 1704074400000,
+          toOpenid: '',
+          toNickname: ''
+        },
+        {
+          _id: 'comment_003',
+          nickName: '小明同学',
+          openid: 'user_001',
+          text: '人不多，有位置',
+          time: 1704078000000,
+          toOpenid: 'user_003',
+          toNickname: '小刚'
+        }
+      ]
     },
     {
       _id: 'article_002',
@@ -36,7 +65,27 @@ const mockData = {
       prizeList: [
         { nickName: '小王', openid: 'user_004', isPrize: true }
       ],
-      isPrize: false
+      isPrize: false,
+      commentList: [
+        {
+          _id: 'comment_004',
+          nickName: '小王',
+          openid: 'user_004',
+          text: '高等数学教材多少钱？',
+          time: 1703984400000,
+          toOpenid: '',
+          toNickname: ''
+        },
+        {
+          _id: 'comment_005',
+          nickName: '学霸小李',
+          openid: 'user_005',
+          text: '50元一本，九成新',
+          time: 1703988000000,
+          toOpenid: 'user_004',
+          toNickname: '小王'
+        }
+      ]
     },
     {
       _id: 'article_003',
@@ -51,7 +100,8 @@ const mockData = {
       type: '求购信息',
       userName: '小李同学',
       prizeList: [],
-      isPrize: false
+      isPrize: false,
+      commentList: []
     }
   ],
   // 课程表数据
