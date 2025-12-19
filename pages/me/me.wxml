@@ -5,12 +5,12 @@
   <view class="top">
     <view class="user-info">
         <!-- 头像 -->
-        <view class="user-photo" bindtap="getUserProfile">
+        <view class="user-photo" bindtap="{{hasUserInfo ? 'chooseAvatar' : 'getUserProfile'}}">
           <image wx:if="{{!hasUserInfo}}" src=".././../assets/images/me/login.png"></image>
           <image wx:else src="{{avatarUrl}}"></image>
         </view>
         <!-- 用户名 -->
-        <view class="user-name">
+        <view class="user-name" bindtap="{{hasUserInfo ? 'editNickName' : 'getUserProfile'}}">
             <text wx:if="{{!hasUserInfo}}">未登录</text>
             <text wx:else>{{nickName}}</text>
         </view>
@@ -35,7 +35,32 @@
         </view>
     </view>
   </view>
-  
+
+  <!-- 用户详细信息编辑区域 -->
+  <view wx:if="{{hasUserInfo}}" class="user-info-edit">
+    <view class="info-item">
+      <view class="info-label">性别</view>
+      <view class="info-content" bindtap="chooseGender">
+        <text>{{gender == 1 ? '男' : gender == 2 ? '女' : '未知'}}</text>
+        <image src="../../assets/images/me/next.png"></image>
+      </view>
+    </view>
+    <view class="info-item">
+      <view class="info-label">城市</view>
+      <view class="info-content" bindtap="editCity">
+        <text>{{city || '未设置'}}</text>
+        <image src="../../assets/images/me/next.png"></image>
+      </view>
+    </view>
+    <view class="info-item">
+      <view class="info-label">个人签名</view>
+      <view class="info-content" bindtap="editSignature">
+        <text>{{signature || '未设置'}}</text>
+        <image src="../../assets/images/me/next.png"></image>
+      </view>
+    </view>
+  </view>
+
   <!-- 底部信息栏 -->
   <view class="bottom">
     <view class="bottom-content">

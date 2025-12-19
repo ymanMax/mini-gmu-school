@@ -52,7 +52,6 @@
   color: rgb(244, 243, 241);
   text-align: center;
   font-size: 30rpx;
-
 }
 
 .type-num{
@@ -64,14 +63,54 @@
   top: -5rpx;
 }
 
+/* 用户详细信息编辑区域 */
+.user-info-edit{
+  margin-top: 50rpx;
+  width: 95%;
+  border-radius: 5%;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: rgb(253, 253, 253);
+  padding-bottom: 35rpx;
+  box-shadow: 5rpx 5rpx 10rpx 5rpx #e1e1e1;
+}
+
+.info-item{
+  display: flex;
+  margin: 20rpx 40rpx;
+  padding: 30rpx 0rpx;
+  justify-content: space-between;
+  border-bottom: 2rpx solid rgb(238, 238, 238);
+}
+
+.info-label{
+  font-size: 32rpx;
+  color: #333;
+  font-weight: 400;
+}
+
+.info-content{
+  display: flex;
+  align-items: center;
+}
+
+.info-content text{
+  font-size: 32rpx;
+  color: #666;
+  margin-right: 20rpx;
+}
+
+.info-content image{
+  width: 35rpx;
+  height: 35rpx;
+}
 
 /* 下面 */
 .bottom{
   margin-top: 50rpx;
-  
 }
 .bottom-content{
-  width: 95%; 
+  width: 95%;
   border-radius: 5%;
   margin: auto;
   background-color: rgb(253, 253, 253);
@@ -100,5 +139,3 @@
     width: 600rpx;
     background-color: #fff;
 }
-
-
