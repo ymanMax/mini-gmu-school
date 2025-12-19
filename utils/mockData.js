@@ -1,5 +1,78 @@
 // mock数据文件
 const mockData = {
+  // 轮播图数据
+  rotationList: [
+    {
+      id: 1,
+      image: 'https://i.loli.net/2021/05/16/7P2la8DwiKVLjqM.jpg',
+      link: '/pages/article/article?id=1',
+      title: '校园新闻'
+    },
+    {
+      id: 2,
+      image: 'https://i.loli.net/2021/05/16/oSYXhs6wKG5Wq3u.jpg',
+      link: '/pages/article/article?id=2',
+      title: '活动通知'
+    },
+    {
+      id: 3,
+      image: 'https://i.loli.net/2021/05/16/Lsx8PobdcAu5pvY.jpg',
+      link: '/pages/article/article?id=3',
+      title: '学术讲座'
+    },
+    {
+      id: 4,
+      image: 'https://i.loli.net/2021/05/16/5fjAtRqTuS3Eca7.jpg',
+      link: '/pages/article/article?id=4',
+      title: '校园风光'
+    },
+  ],
+  // 分类标签数据
+  sortList: [
+    {
+      id: 1,
+      icon: "../../assets/images/sort/timetable.png",
+      sortid: 2,
+      text: "我的课表",
+      page: '/pages/timetable/timetable'
+    }, {
+      id: 2,
+      icon: "../../assets/images/sort/calendar.png",
+      sortid: 3,
+      text: "校历查询",
+      page: '/pages/article/article?type=calendar'
+    }, {
+      id: 3,
+      icon: "../../assets/images/sort/achievement.png",
+      sortid: 4,
+      text: "成绩查询",
+      page: '/pages/article/article?type=achievement'
+    }, {
+      id: 4,
+      icon: "../../assets/images/sort/pay.png",
+      sortid: 5,
+      text: "缴费大厅",
+      page: '/pages/article/article?type=pay'
+    }, {
+      id: 5,
+      icon: "../../assets/images/sort/repair.png",
+      sortid: 6,
+      text: "寝室报修",
+      page: '/pages/article/article?type=repair'
+    }, {
+      id: 6,
+      icon: "../../assets/images/sort/46ji.png",
+      sortid: 7,
+      text: "四级查询",
+      page: '/pages/article/article?type=exam'
+    }, {
+      id: 7,
+      icon: "../../assets/images/sort/other.png",
+      sortid: 8,
+      text: "更多",
+      page: '/pages/article/article?type=more'
+    },
+  ],
   // 文章数据
   articles: [
     {
