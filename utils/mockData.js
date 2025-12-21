@@ -10,6 +10,7 @@ const mockData = {
         'https://i.loli.net/2021/05/16/oSYXhs6wKG5Wq3u.jpg'
       ],
       video: '',
+      title: '图书馆学习邀约',
       text: '今天天气真好，适合去图书馆学习！有一起的同学吗？',
       time: 1704067200000, // 2024-01-01
       location: '北京市·清华大学图书馆',
@@ -19,6 +20,7 @@ const mockData = {
         { nickName: '小红', openid: 'user_002', isPrize: true },
         { nickName: '小刚', openid: 'user_003', isPrize: true }
       ],
+      commentList: [],
       isPrize: false
     },
     {
@@ -28,6 +30,7 @@ const mockData = {
         'https://i.loli.net/2021/05/16/Lsx8PobdcAu5pvY.jpg'
       ],
       video: '',
+      title: '二手教材出售',
       text: '出售二手教材：高等数学、线性代数、大学物理，有需要的同学联系我！',
       time: 1703980800000, // 2023-12-31
       location: '北京市·北京大学',
@@ -36,6 +39,7 @@ const mockData = {
       prizeList: [
         { nickName: '小王', openid: 'user_004', isPrize: true }
       ],
+      commentList: [],
       isPrize: false
     },
     {
@@ -45,12 +49,14 @@ const mockData = {
         'https://i.loli.net/2021/05/16/Lsx8PobdcAu5pvY.jpg'
       ],
       video: '',
+      title: '求购二手自行车',
       text: '求购二手自行车一辆，价格合理，有意者联系！',
       time: 1703894400000, // 2023-12-30
       location: '北京市·北京理工大学',
       type: '求购信息',
       userName: '小李同学',
       prizeList: [],
+      commentList: [],
       isPrize: false
     }
   ],

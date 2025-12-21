@@ -2,14 +2,22 @@
 <view class="content" style="margin-top:{{navH*4+40}}rpx" wx:if="{{isPublish}}">
   <view class="content-input">
 
-     <!-- 文本输入框 -->
+     <!-- 标题输入框 -->
+    <view>
+      <input class='title-input'
+        placeholder="请输入帖子标题"
+        bindinput="inputTitle"
+        maxlength='50'
+      />
+    </view>
+
+    <!-- 内容输入框 -->
     <view>
       <textarea class='text-input'
-        autofocus
         bindinput="inputContent"
         maxlength='200'
         placeholder="请输入文字内容"
-        auto-height='{{true}}' 
+        auto-height='{{true}}'
         />
     </view>
 
