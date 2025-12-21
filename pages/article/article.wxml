@@ -20,6 +20,7 @@
     <!-- 右边用户昵称，发布信息 -->
     <view class="right">
         <view bindtap="toUserDetail" class="nickname" data-openid="{{item._openid}}">{{item.userName}}</view>
+        <view class="article-title" bindtap="toDetail" data-id="{{item._id}}">{{item.title}}</view>
         <view bindtap="toDetail" data-id="{{item._id}}">{{item.text}}</view>
         <view class="images-wrap">
             <image bindtap="previewImg" class="image-1" data-index="{{numm}}" data-src="{{imgItem}}" src="{{imgItem}}" wx:if="{{item.images.length==1}}" wx:for="{{item.images}}" wx:for-index="indexx" wx:for-item="imgItem" wx:key="index"></image>

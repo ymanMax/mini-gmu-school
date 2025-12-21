@@ -11,7 +11,8 @@ Page({
       sorts: ["生活分享", "闲置交易", "表白交友","失物招领", "疑问互答", "任务兼职"],
       selected:0
     },
-    content:"", // 输入框内容
+    title: "", // 帖子标题
+    content:"", // 帖子内容
     location: "",
     tempFilePaths: [], // 上传图片小程序临时路径
     video:'',
@@ -30,7 +31,12 @@ Page({
     })
   },
 
-  // 获取文本框输入内容
+  // 获取标题输入内容
+  inputTitle: function(e) {
+    this.setData({title: e.detail.value})
+  },
+
+  // 获取内容输入内容
   inputContent: function(e) {
     this.setData({content: e.detail.value})
   },
@@ -204,18 +210,38 @@ Page({
   },
 
   // 发布帖子（本地模拟）
-  publishArticle(){ 
-    if(this.data.isChecked === false || this.data.content === ''){
+  publishArticle(){
+    if(this.data.isChecked === false || (this.data.title === '' && this.data.content === '')){
       wx.showToast({
         icon: 'error',
-        title: '未填写或未同意'
+        title: '请至少填写标题或内容'
       })
     }else{
-      // 本地模拟发布数据
+      // 构造新帖子数据
+      const newArticle = {
+        _id: 'article_' + Date.now(),
+        headImg: wx.getStorageSync('avatarUrl') || 'https://thirdwx.qlogo.cn/mmopen/vi_32/POgEwh4mIHO4nibH0KlMECNjjGxQUq24ZEaGT4poC6icRiccVGKSyXwibcPq4BWmiaIGuG1icwxaQX6grC9VemZoJ8rg/132',
+        images: this.data.tempFilePaths,
+        video: this.data.video,
+        title: this.data.title,
+        text: this.data.content,
+        time: Date.now(),
+        location: this.data.location,
+        type: this.data.topic.sorts[this.data.topic.selected],
+        userName: this.data.anonymous ? '匿名用户' : (wx.getStorageSync('nickName') || '匿名用户'),
+        prizeList: [],
+        commentList: [],
+        isPrize: false
+      }
+
+      // 将新帖子添加到 mockData 中
+      mockData.articles.unshift(newArticle)
+
       wx.showToast({
         icon: 'success',
         title: '发布成功'
       })
+
       // 跳转到文章列表页面
       wx.switchTab({
         url: '/pages/article/article'
